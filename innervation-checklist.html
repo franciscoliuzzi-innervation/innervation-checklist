@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="INNERVATION">
+<title>INNERVATION</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #16171c;
+    --dark-green: #41564c;
+    --light-green: #98af71;
+    --white: #ffffff;
+    --gray: #c6c4c0;
+    --light-gray: #f2f1f0;
+    --surface: #1e1f25;
+    --surface2: #26272e;
+    --border: rgba(198,196,192,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 52px 24px 20px;
+    flex-shrink: 0;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 4px;
+  }
+
+  .logo-text {
+    display: inline-flex;
+    align-items: stretch;
+    border: 2px solid var(--white);
+    overflow: hidden;
+  }
+
+  .logo-innervation {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-slash {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 4px 4px;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  .logo-fitness {
+    background: var(--light-green);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-date {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* PERFECT DAY STREAK */
+  .perfect-streak {
+    margin: 0 24px 16px;
+    background: var(--dark-green);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .perfect-streak-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--light-green);
+    text-transform: uppercase;
+  }
+
+  .perfect-streak-count {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .flame { font-size: 18px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    margin: 0 24px 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 0;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s;
+  }
+
+  .tab.active {
+    color: var(--white);
+  }
+
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--light-green);
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin: 16px 24px 8px;
+    flex-shrink: 0;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .progress-pct {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .progress-bar-bg {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--light-green);
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* CHECKLIST */
+  .list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 24px 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .list-scroll::-webkit-scrollbar { display: none; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item:active { opacity: 0.7; }
+
+  .checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gray);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .check-item.checked .checkbox {
+    background: var(--light-green);
+    border-color: var(--light-green);
+  }
+
+  .checkmark {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    color: var(--black);
+    font-size: 12px;
+  }
+
+  .check-item.checked .checkmark {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .item-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .item-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    transition: color 0.2s;
+    line-height: 1.3;
+  }
+
+  .check-item.checked .item-label {
+    color: var(--gray);
+    text-decoration: line-through;
+    text-decoration-color: var(--dark-green);
+  }
+
+  .item-streak {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .streak-fire { font-size: 9px; }
+
+  .item-streak.hot { color: var(--light-green); }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    display: flex;
+    border-top: 1px solid var(--border);
+    background: var(--black);
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    transition: color 0.2s;
+  }
+
+  .nav-btn.active { color: var(--light-green); }
+
+  .nav-icon { font-size: 18px; margin-bottom: 1px; }
+
+  /* STATS PAGE */
+  .stats-page {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stats-page::-webkit-scrollbar { display: none; }
+
+  .stats-page.visible { display: block; }
+
+  .stats-section-title {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin: 20px 0 10px;
+  }
+
+  .stats-section-title:first-child { margin-top: 4px; }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+  }
+
+  .stat-card-left {}
+
+  .stat-card-name {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .stat-card-sub {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 0.08em;
+  }
+
+  .stat-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .stat-streak-num {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-streak-num.hot { color: var(--light-green); }
+
+  .stat-streak-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 9px;
+    color: var(--gray);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .stat-best {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 9px;
+    color: var(--dark-green);
+    letter-spacing: 0.08em;
+  }
+
+  /* Perfect day big card */
+  .perfect-day-card {
+    background: var(--dark-green);
+    border-radius: 16px;
+    padding: 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .pd-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--light-green);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .pd-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.4;
+    max-width: 180px;
+  }
+
+  .pd-num {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 52px;
+    font-weight: 500;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .pd-best {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    color: var(--light-green);
+    letter-spacing: 0.1em;
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* completion banner */
+  .complete-banner {
+    display: none;
+    margin: 0 24px 12px;
+    background: var(--dark-green);
+    border-radius: 12px;
+    padding: 10px 16px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .complete-banner.show { display: block; }
+
+  .complete-banner-text {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--light-green);
+    text-transform: uppercase;
+  }
+
+  /* checklist wrapper */
+  .checklist-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .checklist-view.hidden { display: none; }
+
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-wrap">
+      <div class="logo-text">
+        <span class="logo-innervation">INNERVATION</span>
+        <span class="logo-slash">/</span>
+        <span class="logo-fitness">FITNESS</span>
+      </div>
+    </div>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+
+  <!-- PERFECT STREAK (hidden on stats) -->
+  <div class="perfect-streak" id="perfectStreakBar">
+    <div>
+      <div class="perfect-streak-label">Perfect Day Streak</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(198,196,192,0.6);margin-top:2px;">AM + PM both complete</div>
+    </div>
+    <div class="perfect-streak-count">
+      <span class="flame">🔥</span>
+      <span id="perfectStreakNum">0</span>
+    </div>
+  </div>
+
+  <!-- CHECKLIST VIEW (AM or PM) -->
+  <div class="checklist-view" id="checklistView">
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" id="tabAM" onclick="switchList('am')">AM</button>
+      <button class="tab" id="tabPM" onclick="switchList('pm')">PM</button>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-label" id="progressLabel">Morning Routine</span>
+        <span class="progress-pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- COMPLETE BANNER -->
+    <div class="complete-banner" id="completeBanner">
+      <div class="complete-banner-text" id="completeBannerText">✦ Morning Complete ✦</div>
+    </div>
+
+    <!-- LIST -->
+    <div class="list-scroll" id="listScroll"></div>
+  </div>
+
+  <!-- STATS VIEW -->
+  <div class="stats-page" id="statsPage">
+    <div class="stats-section-title">Perfect Days</div>
+    <div class="perfect-day-card">
+      <div>
+        <div class="pd-label">Current Streak</div>
+        <div class="pd-desc">Both AM + PM fully complete</div>
+      </div>
+      <div>
+        <div class="pd-num" id="statsPerfectNum">0</div>
+        <div class="pd-best" id="statsPerfectBest">BEST: 0</div>
+      </div>
+    </div>
+
+    <div class="stats-section-title">AM Streaks</div>
+    <div id="amStreakCards"></div>
+
+    <div class="stats-section-title">PM Streaks</div>
+    <div id="pmStreakCards"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="navAM" onclick="navTo('am')">
+      <span class="nav-icon">☀️</span>
+      AM
+    </button>
+    <button class="nav-btn" id="navPM" onclick="navTo('pm')">
+      <span class="nav-icon">🌙</span>
+      PM
+    </button>
+    <button class="nav-btn" id="navStats" onclick="navTo('stats')">
+      <span class="nav-icon">📊</span>
+      Stats
+    </button>
+  </div>
+
+</div>
+
+<script>
+const AM_ITEMS = [
+  { id: 'am_reading', label: '10 Minutes of Reading' },
+  { id: 'am_pills', label: 'Pills' },
+  { id: 'am_protein', label: 'Protein Shake' },
+  { id: 'am_creatine', label: 'Creatine' },
+  { id: 'am_gear', label: 'Cell Phone, AirPods, Laptop' },
+  { id: 'am_10min', label: '10 Minute Check' },
+  { id: 'am_floss', label: 'Floss' },
+  { id: 'am_pushups', label: '60 Push Ups' },
+  { id: 'am_emma', label: 'Kiss My Lerve' },
+  { id: 'am_jaw', label: 'Jaw Exercise' },
+  { id: 'am_moist', label: 'Moisturize' },
+  { id: 'am_foamer', label: 'Clean Milk Foamer' },
+  { id: 'am_weigh', label: 'Weight In' },
+  { id: 'am_helmet', label: 'Helmet' },
+];
+
+const PM_ITEMS = [
+  { id: 'pm_handgrip', label: '4 x 10/10 Hand Grips' },
+  { id: 'pm_finger', label: '3 x 20/20 Finger Resistance' },
+  { id: 'pm_claude', label: '10 Min Claude Business' },
+  { id: 'pm_schedule', label: 'Confirm Schedule' },
+  { id: 'pm_stripe', label: 'Check Stripe Money' },
+];
+
+// STATE
+let currentList = 'am';
+let currentNav = 'am';
+
+function getState() {
+  try {
+    return JSON.parse(localStorage.getItem('innervation_state') || '{}');
+  } catch(e) { return {}; }
+}
+
+function saveState(s) {
+  localStorage.setItem('innervation_state', JSON.stringify(s));
+}
+
+function getTodayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+}
+
+function initState() {
+  let s = getState();
+  const today = getTodayKey();
+
+  // Check if we need to reset (new day)
+  if (s.lastDay !== today) {
+    // Before resetting, check if yesterday was a perfect day
+    if (s.lastDay) {
+      const allAMDone = AM_ITEMS.every(i => s.checked && s.checked[i.id]);
+      const allPMDone = PM_ITEMS.every(i => s.checked && s.checked[i.id]);
+      if (allAMDone && allPMDone) {
+        s.perfectStreak = (s.perfectStreak || 0) + 1;
+        s.perfectBest = Math.max(s.perfectStreak, s.perfectBest || 0);
+      } else {
+        s.perfectStreak = 0;
+      }
+      // Update streaks for each item
+      const allItems = [...AM_ITEMS, ...PM_ITEMS];
+      allItems.forEach(item => {
+        const wasChecked = s.checked && s.checked[item.id];
+        if (!s.streaks) s.streaks = {};
+        if (!s.best) s.best = {};
+        if (wasChecked) {
+          s.streaks[item.id] = (s.streaks[item.id] || 0) + 1;
+          s.best[item.id] = Math.max(s.streaks[item.id], s.best[item.id] || 0);
+        } else {
+          s.streaks[item.id] = 0;
+        }
+      });
+    }
+    s.checked = {};
+    s.lastDay = today;
+    saveState(s);
+  }
+
+  if (!s.streaks) s.streaks = {};
+  if (!s.best) s.best = {};
+  if (!s.perfectStreak) s.perfectStreak = 0;
+  if (!s.perfectBest) s.perfectBest = 0;
+  return s;
+}
+
+function renderDate() {
+  const d = new Date();
+  const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  document.getElementById('headerDate').textContent = `${days[d.getDay()]} ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+
+function renderList() {
+  const s = initState();
+  const items = currentList === 'am' ? AM_ITEMS : PM_ITEMS;
+  const scroll = document.getElementById('listScroll');
+  scroll.innerHTML = '';
+
+  items.forEach(item => {
+    const checked = !!(s.checked && s.checked[item.id]);
+    const streak = (s.streaks && s.streaks[item.id]) || 0;
+    const isHot = streak >= 3;
+
+    const div = document.createElement('div');
+    div.className = 'check-item' + (checked ? ' checked' : '');
+    div.dataset.id = item.id;
+    div.onclick = () => toggle(item.id);
+
+    div.innerHTML = `
+      <div class="checkbox">
+        <span class="checkmark">✓</span>
+      </div>
+      <div class="item-content">
+        <div class="item-label">${item.label}</div>
+        <div class="item-streak ${isHot ? 'hot' : ''}">
+          <span class="streak-fire">${streak > 0 ? '🔥' : '·'}</span>
+          ${streak} day streak
+        </div>
+      </div>
+    `;
+    scroll.appendChild(div);
+  });
+
+  renderProgress(s);
+  renderPerfectStreak(s);
+}
+
+function toggle(id) {
+  const s = initState();
+  if (!s.checked) s.checked = {};
+  s.checked[id] = !s.checked[id];
+  saveState(s);
+  renderList();
+}
+
+function renderProgress(s) {
+  const items = currentList === 'am' ? AM_ITEMS : PM_ITEMS;
+  const done = items.filter(i => s.checked && s.checked[i.id]).length;
+  const total = items.length;
+  const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = currentList === 'am' ? 'Morning Routine' : 'Evening Routine';
+
+  const banner = document.getElementById('completeBanner');
+  const bannerText = document.getElementById('completeBannerText');
+  if (pct === 100) {
+    banner.classList.add('show');
+    bannerText.textContent = currentList === 'am' ? '✦ Morning Complete ✦' : '✦ Evening Complete ✦';
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function renderPerfectStreak(s) {
+  document.getElementById('perfectStreakNum').textContent = s.perfectStreak || 0;
+}
+
+function switchList(which) {
+  currentList = which;
+  document.getElementById('tabAM').classList.toggle('active', which === 'am');
+  document.getElementById('tabPM').classList.toggle('active', which === 'pm');
+  renderList();
+}
+
+function navTo(which) {
+  currentNav = which;
+
+  const checklistView = document.getElementById('checklistView');
+  const statsPage = document.getElementById('statsPage');
+  const perfectBar = document.getElementById('perfectStreakBar');
+
+  ['navAM','navPM','navStats'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+
+  if (which === 'stats') {
+    checklistView.classList.add('hidden');
+    statsPage.classList.add('visible');
+    perfectBar.style.display = 'none';
+    document.getElementById('navStats').classList.add('active');
+    renderStats();
+  } else {
+    checklistView.classList.remove('hidden');
+    statsPage.classList.remove('visible');
+    perfectBar.style.display = 'flex';
+    document.getElementById('nav' + which.toUpperCase()).classList.add('active');
+    switchList(which);
+  }
+}
+
+function renderStats() {
+  const s = initState();
+
+  document.getElementById('statsPerfectNum').textContent = s.perfectStreak || 0;
+  document.getElementById('statsPerfectBest').textContent = `BEST: ${s.perfectBest || 0}`;
+
+  renderStreakCards('amStreakCards', AM_ITEMS, s);
+  renderStreakCards('pmStreakCards', PM_ITEMS, s);
+}
+
+function renderStreakCards(containerId, items, s) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  items.forEach(item => {
+    const streak = (s.streaks && s.streaks[item.id]) || 0;
+    const best = (s.best && s.best[item.id]) || 0;
+    const isHot = streak >= 3;
+
+    const div = document.createElement('div');
+    div.className = 'stat-card';
+    div.innerHTML = `
+      <div class="stat-card-left">
+        <div class="stat-card-name">${item.label}</div>
+        <div class="stat-card-sub">BEST: ${best} days</div>
+      </div>
+      <div class="stat-card-right">
+        <div class="stat-streak-num ${isHot ? 'hot' : ''}">${streak}</div>
+        <div class="stat-streak-label">day streak</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+// INIT
+renderDate();
+renderList();
+</script>
+</body>
+</html>
